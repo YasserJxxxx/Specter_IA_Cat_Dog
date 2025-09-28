@@ -1,8 +1,4 @@
-¡Genial! Un archivo README.md es esencial para cualquier proyecto de GitHub. Actúa como la página de inicio de tu proyecto, proporcionando una visión general rápida, instrucciones de configuración y resultados clave.
-
-Aquí tienes un borrador completo y bien estructurado, listo para ser copiado y pegado como README.md en tu repositorio.
-
-🐈🐕 Clasificador Binario de Perros y Gatos (Regresión Logística - Baseline)
+#🐈🐕 Clasificador Binario de Perros y Gatos (Regresión Logística - Baseline)
 🎯 Descripción del Proyecto
 Este proyecto implementa un clasificador binario simple para distinguir entre imágenes de perros y gatos. Utiliza el algoritmo de Regresión Logística aplicado a características de píxeles brutos y aplanados. Sirve como un modelo de línea base (baseline) para evaluar la complejidad mínima necesaria para resolver el problema de clasificación.
 
