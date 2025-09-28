@@ -1,71 +1,114 @@
-#🐈🐕 Clasificador Binario de Perros y Gatos (Regresión Logística - Baseline)
-🎯 Descripción del Proyecto
-Este proyecto implementa un clasificador binario simple para distinguir entre imágenes de perros y gatos. Utiliza el algoritmo de Regresión Logística aplicado a características de píxeles brutos y aplanados. Sirve como un modelo de línea base (baseline) para evaluar la complejidad mínima necesaria para resolver el problema de clasificación.
+# 🐈🐕 Clasificador Binario de Perros y Gatos (Regresión Logística - Baseline)
 
-El flujo de trabajo está optimizado para entornos de notebook (como Google Colab), utilizando persistencia de datos y modelo en Google Drive para acelerar las ejecuciones posteriores al pre-procesamiento inicial.
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-v1.0+-orange.svg)](https://scikit-learn.org/stable/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-🛠️ Tecnologías y Dependencias
-Tecnología	Rol
-Python	Lenguaje de programación principal.
-NumPy / Pandas	Manejo eficiente de arrays de píxeles y estructuras de datos.
-OpenCV (cv2)	Carga, redimensionamiento y pre-procesamiento de imágenes.
-Scikit-learn	Implementación del modelo LogisticRegression y métricas.
-Joblib	Serialización y persistencia del modelo en disco.
-KaggleHub	Descarga automática del dataset inicial.
+---
 
-Exportar a Hojas de cálculo
-🚀 Configuración y Ejecución
-La forma más sencilla de ejecutar este proyecto es a través de Google Colab, ya que requiere las utilidades de google.colab para el montaje de Drive y la carga interactiva de archivos.
+## 💡 Descripción General del Proyecto
 
-1. Entorno
-Abre el archivo del proyecto (o copia y pega el código completo) en una nueva sesión de Google Colab.
+Este proyecto implementa un clasificador binario de imágenes para la identificación de **perros** y **gatos**. Se utiliza la **Regresión Logística** como modelo de **línea base (baseline)**. El clasificador opera sobre los píxeles de las imágenes pre-procesadas (escaladas a 64x64 y aplanadas), permitiendo una solución eficiente y con alta interpretabilidad.
 
-Ejecuta la primera celda. Las dependencias se instalarán automáticamente (pip install -q).
+### 🎯 Objetivos Clave
 
-2. Persistencia de Datos (¡Importante!)
-El script está configurado para la persistencia. Sigue estos pasos en orden:
+* Establecer un rendimiento inicial ($\approx 71\%$ de precisión) con un modelo lineal simple.
+* Implementar una arquitectura de **persistencia de datos y modelo** en Google Drive para optimizar el tiempo de ejecución en entornos *notebook*.
 
-El script solicitará el montaje de Google Drive. Acepta y autoriza el acceso.
+---
 
-Primera Ejecución: El script detectará que los datos pre-procesados no existen en Drive. Iniciará la descarga del dataset de Kaggle y el pre-procesamiento de las imágenes (escala de grises, 64×64, normalización).
+## 🛠️ Stack Tecnológico y Dependencias
 
-Este proceso es el más largo (puede tardar varios minutos). Al finalizar, guardará los arrays en Drive (dogs_cats_logistic_data.npz) y el modelo entrenado (logistic_regression_model.pkl).
+| Tecnología | Rol en el Proyecto |
+| :--- | :--- |
+| **Python 3.x** | Lenguaje de desarrollo. |
+| **Scikit-learn** | Implementación del modelo `LogisticRegression` y cálculo de métricas. |
+| **OpenCV (`cv2`)** | Pre-procesamiento de imágenes (escala de grises, redimensionamiento). |
+| **NumPy / Pandas** | Manejo de arrays de píxeles y formateo de resultados. |
+| **Joblib** | Serialización y persistencia del modelo en Drive. |
+| **KaggleHub** | Gestión de la descarga del dataset inicial. |
 
-Ejecuciones Posteriores: Si detienes y vuelves a ejecutar el notebook, el script detectará los archivos en Drive y cargará los datos y el modelo en segundos, omitiendo la descarga y el reentrenamiento.
+---
 
-3. Clasificación Interactiva
-Al final del script, se llama a la función classify_uploaded_image. Esto activará un cuadro de diálogo para que puedas subir una imagen propia (un perro o un gato) y ver la predicción en tiempo real del modelo entrenado.
+## 🚀 Guía de Configuración y Ejecución
 
-📊 Resultados de la Evaluación
-Los resultados que se muestran a continuación corresponden a una ejecución típica del modelo sobre el conjunto de prueba (20% de los datos totales).
+El proyecto está optimizado para ser ejecutado en **Google Colab**.
 
-Matriz de Confusión (Ejemplo)
-La matriz desglosa los aciertos y errores:
+### 1. Preparación del Entorno
 
-Predicho Gato (0)	Predicho Perro (1)
-Real Gato (0)	150 (TN)	50 (FP)
-Real Perro (1)	66 (FN)	134 (TP)
+1.  Abre el código fuente completo en una nueva sesión de Google Colab.
+2.  Ejecuta la primera celda para instalar automáticamente las librerías necesarias (`pip install -q`).
+3.  El script solicitará la **autorización para montar Google Drive**. Este paso es crucial para la persistencia.
 
-Exportar a Hojas de cálculo
-Métricas Clave
-Métrica	Gato (0)	Perro (1)
-Precision	∼0.69	∼0.73
-Recall	∼0.75	∼0.67
-F1-Score	∼0.72	∼0.70
-Accuracy Global	\multicolumn{2}{	c
+### 2. Flujo de Persistencia de Datos
 
-Exportar a Hojas de cálculo
-Conclusión del Baseline
-La Regresión Logística logra un rendimiento aceptable (≈71%) para un modelo lineal. Esto confirma que la clasificación es posible incluso con características de píxeles brutos. Sin embargo, la limitación lineal del modelo es la barrera principal para una mayor precisión.
+El script sigue una estrategia condicional para optimizar el tiempo:
 
-💡 Próximos Pasos (Hoja de Ruta)
-Para mejorar el rendimiento del clasificador, las siguientes mejoras están planificadas:
+* **Primera Ejecución:**
+    1.  Descarga el *dataset* de Kaggle.
+    2.  Ejecuta el **Pre-procesamiento** (aplanamiento, normalización).
+    3.  Entrena el modelo de Regresión Logística.
+    4.  Guarda los arrays de datos (`.npz`) y el modelo entrenado (`.pkl`) en una carpeta de Drive.
+* **Ejecuciones Posteriores:**
+    1.  El script detecta los archivos persistentes.
+    2.  Omite la descarga y el entrenamiento.
+    3.  **Carga el modelo y los datos en segundos.**
 
-Migración a CNN: Implementar una Red Neuronal Convolucional para capturar características espaciales y no lineales de las imágenes.
+### 3. Inferencia Interactiva
 
-Transfer Learning: Utilizar modelos preentrenados (e.g., VGG16) para acelerar el entrenamiento y obtener una precisión superior al aprovechar el conocimiento visual preexistente.
+Una vez finalizado el entrenamiento/carga, el script ejecuta un módulo de prueba que permite:
 
-Aumento de Datos: Aplicar rotaciones, flips y zoom a las imágenes de entrenamiento para mejorar la robustez del modelo.
+* Subir una imagen local (Perro o Gato).
+* Pre-procesar la imagen de manera idéntica a los datos de entrenamiento.
+* Mostrar la predicción del modelo con su **nivel de confianza** (probabilidad).
 
-📝 Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+---
+
+## 📊 Resultados de Evaluación
+
+Los resultados se obtuvieron al evaluar el modelo entrenado sobre el conjunto de prueba (20% de los datos).
+
+### 1. Matriz de Confusión (Valores Típicos)
+
+| | Predicho Gato (0) | Predicho Perro (1) |
+| :--- | :--- | :--- |
+| **Real Gato (0)** | $\mathbf{150}$ (Verdaderos Negativos) | $\mathbf{50}$ (Falsos Positivos) |
+| **Real Perro (1)** | $\mathbf{66}$ (Falsos Negativos) | $\mathbf{134}$ (Verdaderos Positivos) |
+
+### 2. Métricas Detalladas
+
+| Métrica | Gato (0) | Perro (1) |
+| :--- | :--- | :--- |
+| **Precision** | $\approx 0.69$ | $\approx 0.73$ |
+| **Recall** | $\approx 0.75$ | $\approx 0.67$ |
+| **F1-Score** | $\approx 0.72$ | $\approx 0.70$ |
+| **Accuracy Global** | \multicolumn{2}{|c|}{$\mathbf{0.7100}$ ($\mathbf{71.00\%}$)} |
+
+### 3. Análisis de las Limitaciones
+
+La precisión del $\sim 71\%$ refleja la limitación del modelo:
+
+* **Regresión Logística** crea una **frontera de decisión lineal**.
+* Los problemas reales de clasificación de imágenes (variaciones de pose, iluminación) son **no lineales**.
+* El modelo pierde información espacial crítica al **aplanar** la imagen a un vector de 4096 píxeles.
+
+---
+
+## ⏭️ Hoja de Ruta y Próximos Pasos
+
+Para superar la barrera de rendimiento del modelo lineal, se plantean las siguientes mejoras:
+
+### A. Mejoras en la Arquitectura
+
+* **Migración a CNN:** Implementar una **Red Neuronal Convolucional** para aprovechar su capacidad de aprender jerarquías de características (bordes, texturas) directamente de la estructura 2D de la imagen.
+* **Transfer Learning:** Utilizar un modelo preentrenado (ej. ResNet, MobileNet) para acelerar el entrenamiento y mejorar la precisión aprovechando el conocimiento visual previo.
+
+### B. Mejoras en la Ingeniería de Datos
+
+* **Aumento de Datos:** Aplicar transformaciones aleatorias (*Data Augmentation*) como rotaciones y volteos para aumentar el tamaño efectivo y la diversidad del conjunto de entrenamiento.
+
+---
+
+## 📝 Licencia
+
+Este proyecto está distribuido bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para más detalles.
