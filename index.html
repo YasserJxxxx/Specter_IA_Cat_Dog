@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía Dinámica: Clasificador Gatos vs Perros (Logística)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300,400,600,700&display=swap" rel="stylesheet">
+    <style>
+        /* ====================
+           MODERN & VIBRANT CSS
+           ==================== */
+        :root {
+            --accent-primary: #007AFF; /* Azul Apple/Tech */
+            --accent-secondary: #FF9500; /* Naranja Resalte */
+            --background-light: #f9f9fb;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-grey: #7f8c8d;
+            --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --shadow-deep: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .infographic-container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            gap: 25px;
+            grid-template-columns: 1fr;
+        }
+
+        /* Header / Banner */
+        header {
+            background: linear-gradient(135deg, var(--accent-primary), #3498db);
+            color: var(--card-bg);
+            padding: 50px 0;
+            text-align: center;
+            border-radius: 18px;
+            box-shadow: var(--shadow-deep);
+            grid-column: 1 / -1;
+            transform: translateY(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        header h1 {
+            margin: 0 0 5px;
+            font-size: 2.8em;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+            border-top: 5px solid var(--accent-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .card h2 {
+            color: var(--accent-primary);
+            border-bottom: 2px solid var(--accent-secondary);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+        
+        /* Lists and Specific Content */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ecf0f1;
+            font-size: 0.95em;
+        }
+
+        /* Flow Diagram Styling */
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .flow-step {
+            flex-grow: 1;
+            margin: 5px;
+            padding: 10px;
+            background-color: #e6f7ff; /* light blue */
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-align: center;
+            border: 1px solid var(--accent-primary);
+        }
+        .flow-arrow {
+            font-size: 1.5em;
+            color: var(--accent-primary);
+        }
+
+        /* Metrics Table */
+        .metrics-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 15px;
+        }
+
+        .metrics-table th, .metrics-table td {
+            padding: 12px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .metrics-table th {
+            background-color: var(--accent-primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .metrics-table td {
+            background-color: #f4f6f9;
+        }
+        
+        .accuracy-highlight {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            border: 2px solid var(--accent-secondary);
+            border-radius: 8px;
+            padding: 10px;
+            background: #fff8e1;
+        }
+
+        /* ====================
+           ANALYSIS (Interactive)
+           ==================== */
+        #analysis {
+            border-top: 5px solid #E74C3C; /* Rojo para advertencia/análisis */
+        }
+        
+        .analysis-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .analysis-item h3 {
+            font-size: 1.15em;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 10px 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .analysis-item .answer {
+            display: none;
+            padding: 10px 0 15px 15px;
+            border-left: 3px solid var(--accent-primary);
+            color: var(--text-grey);
+            font-size: 0.95em;
+        }
+
+        .toggle-icon {
+            font-size: 1.5em;
+            color: var(--accent-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        /* ====================
+           RESPONSIVENESS
+           ==================== */
+        @media (min-width: 768px) {
+            .infographic-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .full-width {
+                grid-column: 1 / -1;
+            }
+            #data-persistence {
+                grid-column: 1 / 2;
+            }
+            #model-training {
+                grid-column: 2 / 3;
+            }
+            #results {
+                grid-column: 3 / 4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="infographic-container">
+    <header class="full-width">
+        <h1>Clasificador Binario: Gatos vs Perros</h1>
+        <p>Documento Técnico de Desarrollo (DTD) con Modelo de Línea Base</p>
+    </header>
+
+    <section id="data-persistence" class="card">
+        <h2>1. 💾 Datos y Persistencia</h2>
+        
+        <h3>Flujo de Optimización</h3>
+        <p>Usamos **Google Drive** para persistir el modelo y los datos procesados, evitando descargas y pre-procesamientos repetitivos en Colab.</p>
+        <div class="flow-diagram">
+            <div class="flow-step">Inicio</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">Cargar Persistencia</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background-color: #d1f7d3; border-color: #27ae60;">Listo (SI) / Procesar (NO)</div>
+        </div>
+        
+        <h3>Pre-procesamiento Clave</h3>
+        <ul>
+            <li>**Normalización:** Valores de píxeles escalados a $\mathbf{[0.0, 1.0]}$.</li>
+            <li>**Dimensionalidad:** Conversión a vector **1D** de $\mathbf{4096}$ características.</li>
+            <li>**Estandarización:** Imagen a $\mathbf{64 \times 64}$ (Escala de Grises).</li>
+        </ul>
+    </section>
+
+    <section id="model-training" class="card">
+        <h2>2. 🧠 Regresión Logística</h2>
+
+        <h3>Modelo y Configuración</h3>
+        <p>Elegido como *baseline* por su simplicidad y eficiencia para clasificación binaria.</p>
+        <ul>
+            <li>**División:** 80% Entrenamiento / 20% Prueba **Estratificada**.</li>
+            <li>**Parámetros:** `solver='lbfgs'` y $\mathbf{2000}$ iteraciones por la alta dimensionalidad.</li>
+            <li>**Interpretación:** Busca una frontera de decisión **lineal** en el espacio de 4096 características.</li>
+        </ul>
+        
+        <h3>Discusión: Importancia del Pre-procesamiento</h3>
+        <p style="font-size:0.9em; font-style: italic; color:var(--text-grey);">La **normalización** es fundamental. Evita que la función de costo se vea desproporcionadamente afectada por el gran rango de valores de píxeles (0-255), asegurando una convergencia rápida y precisa del optimizador.</p>
+    </section>
+
+    <section id="results" class="card">
+        <h2>3. 📈 Resultados de Evaluación</h2>
+
+        <h3>Precisión Global</h3>
+        <span class="accuracy-highlight">Accuracy: 71.00%</span>
+
+        <h3>Análisis de Métricas</h3>
+        <table class="metrics-table">
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Gato (0)</th>
+                    <th>Perro (1)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Precision**</td>
+                    <td>0.69</td>
+                    <td>**0.73**</td>
+                </tr>
+                <tr>
+                    <td>**Recall**</td>
+                    <td>**0.75**</td>
+                    <td>0.67</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 15px; font-size: 0.95em;">El rendimiento es aceptable para un modelo lineal, confirmando una **separación parcial** de las clases en el espacio de píxeles.</p>
+    </section>
+    
+    <section id="analysis" class="card full-width">
+        <h2>4. ❓ Análisis Crítico y Limitaciones del Modelo</h2>
+        
+        <div class="analysis-item">
+            <h3 onclick="toggleAnswer(this)">¿Por qué la regresión logística puede no ser el modelo más adecuado para clasificar imágenes? <span class="toggle-icon">▼</span></h3>
+            <div class="answer">
+                <p>La R. Logística solo puede definir una **frontera de decisión lineal**. La información visual (texturas, sombras, oclusiones) es **intrínsecamente no lineal**. Al aplanar la imagen, se pierde la estructura espacial 2D, y el modelo lineal es incapaz de capturar las complejas relaciones no lineales entre los píxeles.</p>
+            </div>
+        </div>
+
+        <div class="analysis-item">
+            <h3 onclick="toggleAnswer(this)">¿Qué otros modelos serían más apropiados para esta tarea y por qué? <span class="toggle-icon">▼</span></h3>
+            <div class="answer">
+                <p>Las **Redes Neuronales Convolucionales (CNN)** son el estándar de oro. Sus capas convolucionales están diseñadas para aprender automáticamente **características jerárquicas y no lineales** (bordes, luego formas, luego objetos) a partir de la matriz 2D de la imagen, superando las limitaciones estructurales de los modelos lineales.</p>
+            </div>
+        </div>
+        
+        <div class="analysis-item">
+            <h3 onclick="toggleAnswer(this)">Analizar los resultados: ¿En qué tipo de errores falló más el modelo? <span class="toggle-icon">▼</span></h3>
+            <div class="answer">
+                <p>El modelo falló más en **Falsos Negativos (FN)** (66 errores) que en Falsos Positivos (FP) (50 errores).</p>
+                <p><strong>FN (Falsos Negativos):</strong> El modelo clasificó a **Perros reales como Gatos**. Esto se refleja en el **Recall (0.67)** más bajo para la clase Perro, lo que indica que el clasificador tuvo una baja capacidad para **encontrar** a todos los sujetos de esta clase.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="roadmap" class="card full-width">
+        <h2>5. 🚀 Hoja de Ruta: Próximas Mejoras</h2>
+
+        <div class="flow-diagram">
+            <div class="flow-step" style="background-color: #E6F3FF;">1. Migración a **CNN**</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background-color: #FFECCF;">2. **Transfer Learning** (Usar modelos pre-entrenados)</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background-color: #E2F3E7;">3. **Aumento de Datos** (Mejorar Generalización)</div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // ====================
+    // JAVASCRIPT: TOGGLE INTERACTIVE SECTIONS
+    // ====================
+    function toggleAnswer(header) {
+        const item = header.closest('.analysis-item');
+        const answer = item.querySelector('.answer');
+        const icon = item.querySelector('.toggle-icon');
+        const isExpanded = answer.style.display === 'block';
+
+        // Cierra todos los demás
+        document.querySelectorAll('.analysis-item').forEach(otherItem => {
+            const otherAnswer = otherItem.querySelector('.answer');
+            const otherIcon = otherItem.querySelector('.toggle-icon');
+            if (otherAnswer !== answer) {
+                otherAnswer.style.display = 'none';
+                otherIcon.textContent = '▼';
+                otherIcon.classList.remove('open');
+            }
+        });
+
+        // Abre o cierra el actual
+        if (isExpanded) {
+            answer.style.display = 'none';
+            icon.textContent = '▼';
+            icon.classList.remove('open');
+        } else {
+            answer.style.display = 'block';
+            icon.textContent = '▲';
+            icon.classList.add('open');
+        }
+    }
+</script>
+
+</body>
+</html>
